@@ -31,14 +31,14 @@ public static class IdentityConfiguration
             new Client
             {
                 ClientId = "client",
-                ClientSecrets = { new Secret("some_hard_secret".Sha256()) },
+                ClientSecrets = { new Secret("eu_amo_a_vanessinha".Sha256()) },
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 AllowedScopes = { "read", "write", "profile" }
             },
             new Client
             {
                 ClientId = "geek_shopping",
-                ClientSecrets = { new Secret("some_hard_secret".Sha256()) },
+                ClientSecrets = { new Secret("comi_a_tal_da_sandrinha".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
                 RedirectUris = { "https://localhost:4430/signin-oidc" },
                 PostLogoutRedirectUris = { "https://localhost:4430/signout-callback-oidc" },

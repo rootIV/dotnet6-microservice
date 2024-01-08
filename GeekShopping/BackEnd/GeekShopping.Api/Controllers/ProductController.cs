@@ -10,7 +10,7 @@ namespace GeekShopping.Api.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    private IProductRepository _repository;
+    private readonly IProductRepository _repository;
 
     public ProductController(IProductRepository repository)
     {

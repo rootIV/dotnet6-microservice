@@ -12,6 +12,9 @@ public class Program
 
         builder.Services.AddControllersWithViews();
 
+        builder.Services.AddHttpClient<IProductService, ProductService>(c =>
+            c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
+
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = "Cookies";
@@ -23,7 +26,7 @@ public class Program
                 options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.ClientId = "geek_shopping";
-                options.ClientSecret = "some_hard_secret";
+                options.ClientSecret = "comi_a_tal_da_sandrinha";
                 options.ResponseType = "code";
                 options.ClaimActions.MapJsonKey("role", "role", "role");
                 options.ClaimActions.MapJsonKey("sub", "sub", "sub");
@@ -32,10 +35,6 @@ public class Program
                 options.Scope.Add("geek_shopping");
                 options.SaveTokens = true;
             });
-
-        builder.Services.AddHttpClient<
-            IProductService,
-            ProductService>(c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
 
         var app = builder.Build();
 
