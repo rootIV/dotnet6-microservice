@@ -46,6 +46,8 @@ public class Program
 
         var app = builder.Build();
 
+        var initializer = app.Services.CreateScope().ServiceProvider.GetService<IDbInitializer>();
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
@@ -61,12 +63,7 @@ public class Program
 
         app.UseAuthorization();
 
-        using (var serviceScope = app.Services.CreateScope())
-        {
-            var services = serviceScope.ServiceProvider;
-            var initializer = services.GetRequiredService<IDbInitializer>();
-            initializer.Initialize();
-        }
+        initializer.Initialize();
 
         app.MapControllerRoute(
             name: "default",

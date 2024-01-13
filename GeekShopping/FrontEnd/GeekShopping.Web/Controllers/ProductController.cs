@@ -17,17 +17,11 @@ public class ProductController : Controller
     }
 
     [Authorize]
-    public async Task<IActionResult> ProductIndex()
-    {
-            var token = await HttpContext.GetTokenAsync("access_token");
+    public async Task<IActionResult> ProductIndex() =>
+        View(await _productService.FindAllProducts(""));
 
-            return View(await _productService.FindAllProducts(token));
-    }
-
-    public async Task<IActionResult> ProductCreate()
-    {
-        return View();
-    }
+    public IActionResult ProductCreate() =>
+        View();
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> ProductCreate(ProductModel productModel)
