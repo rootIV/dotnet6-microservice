@@ -1,12 +1,11 @@
 using AutoMapper;
-using GeekShopping.Api.Config;
-using GeekShopping.Api.Model.Context;
-using GeekShopping.Api.Repository;
+using GeekShopping.Cart.Api.Config;
+using GeekShopping.Cart.Api.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace GeekShopping.Api;
+namespace GeekShopping.Cart.Api;
 
 public class Program
 {
@@ -25,7 +24,7 @@ public class Program
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
         builder.Services.AddControllers();
 
@@ -47,11 +46,11 @@ public class Program
                 policy.RequireClaim("scope", "geek_shopping");
             });
         });
-        
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(s =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Product.Api", Version = "v1" });
+            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Cart.Api", Version = "v1" });
             s.EnableAnnotations();
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -62,7 +61,7 @@ public class Program
                 Scheme = "Bearer"
             });
 
-            s.AddSecurityRequirement(new OpenApiSecurityRequirement 
+            s.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
                     new OpenApiSecurityScheme
@@ -98,5 +97,7 @@ public class Program
         app.MapControllers();
 
         app.Run();
+
     }
 }
+
