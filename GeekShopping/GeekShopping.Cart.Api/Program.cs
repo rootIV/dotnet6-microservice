@@ -1,6 +1,7 @@
 using AutoMapper;
 using GeekShopping.Cart.Api.Config;
 using GeekShopping.Cart.Api.Model.Context;
+using GeekShopping.Cart.Api.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -24,7 +25,7 @@ public class Program
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        //builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<ICartRepository, CartRepository>();
 
         builder.Services.AddControllers();
 
