@@ -1,6 +1,5 @@
 ﻿using GeekShopping.Cart.Api.Data.ValueObjects;
 using GeekShopping.Cart.Api.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.Cart.Api.Controllers;
