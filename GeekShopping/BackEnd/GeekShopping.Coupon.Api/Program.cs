@@ -1,12 +1,12 @@
 using AutoMapper;
-using GeekShopping.Product.Api.Config;
-using GeekShopping.Product.Api.Model.Context;
-using GeekShopping.Product.Api.Repository;
+using GeekShopping.Coupon.Api.Config;
+using GeekShopping.Coupon.Api.Model.Context;
+using GeekShopping.Coupon.Api.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace GeekShopping.Product.Api;
+namespace GeekShopping.Coupon.Api;
 
 public class Program
 {
@@ -25,7 +25,7 @@ public class Program
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
         builder.Services.AddControllers();
 
@@ -51,7 +51,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(s =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Product.Api", Version = "v1" });
+            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Coupon.Api", Version = "v1" });
             s.EnableAnnotations();
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

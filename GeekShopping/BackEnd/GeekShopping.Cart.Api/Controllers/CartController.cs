@@ -15,7 +15,7 @@ public class CartController : Controller
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    [HttpGet("find-cart/{id}")]
+    [HttpGet("find-cart/{userId}")]
     public async Task<ActionResult<CartVO>> FindById(string userId)
     {
         var cart = await _repository.FindCartByUserId(userId);
@@ -48,10 +48,10 @@ public class CartController : Controller
         return Ok(cart);
     }
 
-    [HttpDelete("remove-cart/{id}")]
-    public async Task<ActionResult<CartVO>> RemoveCart(int id)
+    [HttpDelete("remove-cart/{userId}")]
+    public async Task<ActionResult<CartVO>> RemoveCart(int userId)
     {
-        var status = await _repository.RemoveFromCart(id);
+        var status = await _repository.RemoveFromCart(userId);
 
         if (!status)
             return BadRequest();

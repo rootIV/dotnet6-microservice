@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using GeekShopping.Api.Data.ValueObjects;
-using GeekShopping.Api.Model;
-using GeekShopping.Api.Model.Context;
+using GeekShopping.Product.Api.Data.ValueObjects;
+using GeekShopping.Product.Api.Model.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeekShopping.Api.Repository;
+namespace GeekShopping.Product.Api.Repository;
 
 public class ProductRepository : IProductRepository
 {
@@ -19,20 +18,20 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<ProductVO>> FindAll()
     {
-        List<Product> products = await _context.Products.ToListAsync();
+        List<Model.Product> products = await _context.Products.ToListAsync();
 
         return _mapper.Map<List<ProductVO>>(products);
     }
     public async Task<ProductVO> FindById(long id)
     {
-        Product product = await _context.Products.Where(product => product.Id == id).FirstOrDefaultAsync() ??
-            new Product();
+        Model.Product product = await _context.Products.Where(product => product.Id == id).FirstOrDefaultAsync() ??
+            new Model.Product();
 
         return _mapper.Map<ProductVO>(product);
     }
     public async Task<ProductVO> Create(ProductVO vo)
     {
-        Product product = _mapper.Map<Product>(vo);
+        Model.Product product = _mapper.Map<Model.Product>(vo);
 
         await _context.Products.AddAsync(product);
         await _context.SaveChangesAsync();
@@ -41,7 +40,7 @@ public class ProductRepository : IProductRepository
     }
     public async Task<ProductVO> Update(ProductVO vo)
     {
-        Product product = _mapper.Map<Product>(vo);
+        Model.Product product = _mapper.Map<Model.Product>(vo);
 
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
@@ -52,8 +51,8 @@ public class ProductRepository : IProductRepository
     {
         try
         {
-            Product product = await _context.Products.Where(product => product.Id == id).FirstOrDefaultAsync() ??
-                new Product();
+            Model.Product product = await _context.Products.Where(product => product.Id == id).FirstOrDefaultAsync() ??
+                new Model.Product();
 
             if (product.Id <= 0)
                 return false;

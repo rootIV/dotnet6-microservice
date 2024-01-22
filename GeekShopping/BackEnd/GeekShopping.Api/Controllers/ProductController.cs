@@ -1,10 +1,10 @@
-﻿using GeekShopping.Api.Data.ValueObjects;
-using GeekShopping.Api.Repository;
-using GeekShopping.Api.Utils;
+﻿using GeekShopping.Product.Api.Data.ValueObjects;
+using GeekShopping.Product.Api.Repository;
+using GeekShopping.Product.Api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GeekShopping.Api.Controllers;
+namespace GeekShopping.Product.Api.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
@@ -21,8 +21,8 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
     {
         var products = await _repository.FindAll();
-        
-        return Ok(products); 
+
+        return Ok(products);
     }
 
     [HttpGet("{id}")]

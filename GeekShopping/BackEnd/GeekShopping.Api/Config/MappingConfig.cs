@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
-using GeekShopping.Api.Data.ValueObjects;
-using GeekShopping.Api.Model;
+using GeekShopping.Product.Api.Data.ValueObjects;
 
-namespace GeekShopping.Api.Config;
+namespace GeekShopping.Product.Api.Config;
 
 public class MappingConfig
 {
-    public static MapperConfiguration RegisterMaps() 
+    public static MapperConfiguration RegisterMaps()
     {
         var mappingConfig = new MapperConfiguration(config =>
         {
-            config.CreateMap<ProductVO, Product>().ReverseMap();
+            config.CreateMap<ProductVO, Model.Product>().ReverseMap();
         });
 
         return mappingConfig;

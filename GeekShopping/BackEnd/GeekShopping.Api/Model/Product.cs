@@ -1,8 +1,8 @@
-﻿using GeekShopping.Api.Model.Base;
+﻿using GeekShopping.Product.Api.Model.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeekShopping.Api.Model;
+namespace GeekShopping.Product.Api.Model;
 
 [Table("product")]
 public class Product : BaseEntitie
