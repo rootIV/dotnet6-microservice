@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.Web", "FrontEn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.Cart.Api", "BackEnd\GeekShopping.Cart.Api\GeekShopping.Cart.Api.csproj", "{BDA06E48-4B83-42F7-92B6-114BDA4BF615}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShopping.Coupon.Api", "BackEnd\GeekShopping.Coupon.Api\GeekShopping.Coupon.Api.csproj", "{FAE999E0-7FC5-4000-B1EB-EA500F2F2D2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.Coupon.Api", "BackEnd\GeekShopping.Coupon.Api\GeekShopping.Coupon.Api.csproj", "{FAE999E0-7FC5-4000-B1EB-EA500F2F2D2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

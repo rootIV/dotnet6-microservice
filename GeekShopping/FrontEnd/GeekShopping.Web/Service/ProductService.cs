@@ -23,6 +23,7 @@ public class ProductService : IProductService
 
         return await response.ReadContentAs<List<ProductViewModel>>();
     }
+
     public async Task<ProductViewModel> FindProductsById(long id, string token)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -31,6 +32,7 @@ public class ProductService : IProductService
 
         return await response.ReadContentAs<ProductViewModel>();
     }
+
     public async Task<ProductViewModel> CreateProduct(ProductViewModel model, string token)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -42,6 +44,7 @@ public class ProductService : IProductService
         else
             throw new Exception("Something went worng when calling API");
     }
+
     public async Task<ProductViewModel> UpdateProduct(ProductViewModel model, string token)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

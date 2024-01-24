@@ -16,13 +16,13 @@ public class CouponController : ControllerBase
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{couponCode}")]
     [Authorize]
     public async Task<ActionResult<CouponVO>> FindById(string couponCode)
     {
         var coupon = await _repository.GetCouponByCouponCode(couponCode);
 
-        if (coupon.Id <= 0)
+        if (coupon == null)
             return NotFound();
 
         return Ok(coupon);
