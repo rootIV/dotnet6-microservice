@@ -99,7 +99,6 @@ public class CartRepository : ICartRepository
             CartDetail cartDetail = await _context.CartDetails.FirstOrDefaultAsync(d =>
                 d.Id == cartDetailsId);
 
-            //If any error appear relate to count, here is
             int total = _context.CartDetails.Count(d => d.CartHeaderId == cartDetail.CartHeaderId);
 
             _context.CartDetails.Remove(cartDetail);

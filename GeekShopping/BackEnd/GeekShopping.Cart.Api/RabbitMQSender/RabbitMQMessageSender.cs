@@ -33,7 +33,7 @@ public class RabbitMQMessageSender : IRabbitMQMessageSender
 
         using var channel = _connection.CreateModel();
 
-        channel.QueueDeclare(queue: queueName, false, false, arguments: null);
+        channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
 
         byte[] body = GetMessageAsByteArray(message);
 
@@ -48,7 +48,7 @@ public class RabbitMQMessageSender : IRabbitMQMessageSender
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
 
-        var json = JsonSerializer.Serialize((CheckoutHeaderVO)message, options);
+        var json = JsonSerializer.Serialize<CheckoutHeaderVO>((CheckoutHeaderVO)message, options);
 
         return Encoding.UTF8.GetBytes(json);
     }

@@ -28,7 +28,7 @@ public class CartService : ICartService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsJson($"{BasePath}/add-cart", cart);
+        var response = await _httpClient.PostAsJsonAsync($"{BasePath}/add-cart", cart);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<CartViewModel>();
@@ -40,7 +40,7 @@ public class CartService : ICartService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PutAsJson($"{BasePath}/update-cart", cart);
+        var response = await _httpClient.PutAsJsonAsync($"{BasePath}/update-cart", cart);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<CartViewModel>();
@@ -69,7 +69,7 @@ public class CartService : ICartService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsJson($"{BasePath}/apply-coupon", cart);
+        var response = await _httpClient.PostAsJsonAsync($"{BasePath}/apply-coupon", cart);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<bool>();
@@ -93,7 +93,7 @@ public class CartService : ICartService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsJson($"{BasePath}/checkout", cartHeader);
+        var response = await _httpClient.PostAsJsonAsync($"{BasePath}/checkout", cartHeader);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<CartHeaderViewModel>();
