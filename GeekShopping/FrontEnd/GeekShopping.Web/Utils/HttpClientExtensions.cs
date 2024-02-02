@@ -5,23 +5,21 @@ namespace GeekShopping.Web.Utils;
 
 public static class HttpClientExtensions
 {
-    private static MediaTypeHeaderValue contentType = new("application/json");
+    private static readonly MediaTypeHeaderValue contentType = new("application/json");
 
     public static async Task<T> ReadContentAs<T>(this HttpResponseMessage response)
     {
-        if (!response.IsSuccessStatusCode) throw
-                new ApplicationException(
-                    $"Something went wrong calling the API : " +
-                    $"{response.ReasonPhrase}");
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApplicationException(
+                $"Something went wrong calling the API : {response.ReasonPhrase}");
+        }
 
         var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         return JsonSerializer.Deserialize<T>(
             dataAsString,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
     public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
     {

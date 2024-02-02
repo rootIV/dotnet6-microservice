@@ -37,7 +37,7 @@ public class ProductService : IProductService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsJsonAsync(BasePath, model);
+        var response = await _httpClient.PostAsJson(BasePath, model);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<ProductViewModel>();
@@ -49,7 +49,7 @@ public class ProductService : IProductService
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PutAsJsonAsync(BasePath, model);
+        var response = await _httpClient.PutAsJson(BasePath, model);
 
         if (response.IsSuccessStatusCode)
             return await response.ReadContentAs<ProductViewModel>();

@@ -2,6 +2,7 @@
 using GeekShopping.Cart.Api.Messages;
 using GeekShopping.Cart.Api.RabbitMQSender;
 using GeekShopping.Cart.Api.Repository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.Cart.Api.Controllers;
@@ -11,12 +12,16 @@ namespace GeekShopping.Cart.Api.Controllers;
 public class CartController : Controller
 {
     private readonly ICartRepository _cartRepository;
+    private readonly ICouponRepository _couponRepository;
     private readonly IRabbitMQMessageSender _rabbitMQMessageSender;
 
-    public CartController(ICartRepository cartRepository, IRabbitMQMessageSender rabbitMQMessageSender)
+    public CartController(ICartRepository cartRepository, 
+        ICouponRepository couponRepository,
+        IRabbitMQMessageSender rabbitMQMessageSender)
     {
         _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
         _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
+        _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
     }
 
     [HttpGet("find-cart/{userId}")]
@@ -88,6 +93,9 @@ public class CartController : Controller
     [HttpPost("checkout")]
     public async Task<ActionResult<CheckoutHeaderVO>> Checkout(CheckoutHeaderVO vo)
     {
+        //string token = Request.Headers["Authorization"];
+        string token = await HttpContext.GetTokenAsync("access_token");
+
         if (vo?.UserId == null)
             return BadRequest();
 
@@ -95,6 +103,16 @@ public class CartController : Controller
 
         if (cart == null)
             return NotFound();
+
+        if (!string.IsNullOrEmpty(vo.CouponCode))
+        {
+            CouponVO coupon = await _couponRepository.GetCoupon(vo.CouponCode, token);
+
+            if (vo.DiscountAmount != coupon.DiscountAmount)
+            {
+                return StatusCode(412);
+            }
+        }
 
         vo.CartDetails = cart.CartDetails;
         vo.DateTime = DateTime.Now;

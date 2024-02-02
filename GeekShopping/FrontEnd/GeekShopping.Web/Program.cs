@@ -10,8 +10,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllersWithViews();
-
         builder.Services.AddHttpClient<IProductService, ProductService>(c =>
             c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"]));
 
@@ -20,6 +18,8 @@ public class Program
 
         builder.Services.AddHttpClient<ICouponService, CouponService>(c =>
             c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponAPI"]));
+
+        builder.Services.AddControllersWithViews();
 
         builder.Services.AddAuthentication(options =>
         {

@@ -48,7 +48,7 @@ public class RabbitMQMessageSender : IRabbitMQMessageSender
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
 
-        var json = JsonSerializer.Serialize<CheckoutHeaderVO>((CheckoutHeaderVO)message, options);
+        var json = JsonSerializer.Serialize((CheckoutHeaderVO)message, options);
 
         return Encoding.UTF8.GetBytes(json);
     }
