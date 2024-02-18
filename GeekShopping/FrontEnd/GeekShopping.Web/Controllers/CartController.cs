@@ -24,9 +24,7 @@ public class CartController : Controller
     [Authorize]
     public async Task<IActionResult> CartIndex()
     {
-        var cart = await FindUserCart();
-
-        return View(cart);
+        return View(await FindUserCart());
     }
 
     [HttpPost]
@@ -128,7 +126,7 @@ public class CartController : Controller
             {
                 var coupon = await _couponService.GetCoupon(response.CartHeader.CouponCode, token);
 
-                if (coupon?.CouponCode != null) 
+                if (coupon?.CouponCode != null)
                 {
                     response.CartHeader.DiscountAmount = coupon.DiscountAmount;
                 }
@@ -140,8 +138,10 @@ public class CartController : Controller
             }
 
             response.CartHeader.PurchaseAmount -= response.CartHeader.DiscountAmount;
+            
+            return response;
         }
 
-        return response;
+        return null;
     }
 }

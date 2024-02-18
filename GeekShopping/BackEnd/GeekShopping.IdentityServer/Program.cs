@@ -18,7 +18,7 @@ public class Program
         var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 
         builder.Services.AddDbContext<MySqlContext>(options => options
-            .UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 35))));
+            .UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 36))));
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<MySqlContext>()
