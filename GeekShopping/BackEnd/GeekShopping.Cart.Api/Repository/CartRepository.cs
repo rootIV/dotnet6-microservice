@@ -21,7 +21,7 @@ public class CartRepository : ICartRepository
         Model.Cart cart = new()
         {
             CartHeader = await _context.CartHeaders.FirstOrDefaultAsync(h => 
-                h.UserId == userId)
+                h.UserId == userId) ?? new CartHeader()
         };
 
         cart.CartDetails = _context.CartDetails.Where(h => 
