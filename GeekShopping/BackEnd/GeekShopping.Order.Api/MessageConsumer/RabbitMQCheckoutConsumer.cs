@@ -1,5 +1,6 @@
 ﻿using GeekShopping.Order.Api.Messages;
 using GeekShopping.Order.Api.Model;
+using GeekShopping.Order.Api.RabbitMQSender;
 using GeekShopping.Order.Api.Repository;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,10 +14,13 @@ public class RabbitMQCheckoutConsumer : BackgroundService
     private readonly OrderRepository _orderRepository;
     private readonly IConnection _connection;
     private IModel _channel;
+    private IRabbitMQMessageSender _rabbitMQMessageSender;
 
-    public RabbitMQCheckoutConsumer(OrderRepository orderRepository)
+    public RabbitMQCheckoutConsumer(OrderRepository orderRepository,
+        IRabbitMQMessageSender rabbitMQMessageSender)
     {
         _orderRepository = orderRepository;
+        _rabbitMQMessageSender = rabbitMQMessageSender;
 
         var factory = new ConnectionFactory
         {
@@ -90,5 +94,26 @@ public class RabbitMQCheckoutConsumer : BackgroundService
         }
 
         await _orderRepository.AddOrder(order);
+
+        PaymentVO payment = new()
+        {
+            Name = order.FirstName + " " + order.LastName,
+            CardNumber = order.CardNumber,
+            CVV = order.CVV,
+            ExpiryMonthYear = order.ExpiryMonthYear,
+            OrderId = order.Id,
+            PurchaseAmount = order.PurchaseAmount,
+            Email = order.Email
+        };
+
+        try
+        {
+            _rabbitMQMessageSender.SendMessage(payment, "orderpaymentprocessqueue");
+        }
+        catch (Exception)
+        {
+            //Log
+            throw;
+        }
     }
 }

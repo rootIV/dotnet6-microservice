@@ -1,12 +1,10 @@
-using GeekShopping.Order.Api.MessageConsumer;
-using GeekShopping.Order.Api.Model.Context;
-using GeekShopping.Order.Api.RabbitMQSender;
-using GeekShopping.Order.Api.Repository;
-using Microsoft.EntityFrameworkCore;
+using GeekShopping.Payment.Api.MessageConsumer;
+using GeekShopping.Payment.Api.RabbitMQSender;
+using GeekShopping.PaymentProcessor;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace GeekShopping.Order.Api;
+namespace GeekShopping.Payments.Api;
 
 public class Program
 {
@@ -14,33 +12,23 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
-
-        builder.Services.AddDbContext<MySqlContext>(options => options
-            .UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 36))));
-
-        var contextBuilder = new DbContextOptionsBuilder<MySqlContext>();
-
-        contextBuilder.UseMySql(connection, new MySqlServerVersion(new Version(8, 0, 36)));
-
-        builder.Services.AddSingleton(new OrderRepository(contextBuilder.Options));
-
-        builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
-        builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
+        builder.Services.AddSingleton<IProcessPayment, ProcessPayment>();
 
         builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
+
+        builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 
         builder.Services.AddControllers();
 
         builder.Services.AddAuthentication("Bearer")
-            .AddJwtBearer(options =>
-            {
-                options.Authority = "https://localhost:4435";
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false
-                };
-            });
+                   .AddJwtBearer(options =>
+                   {
+                       options.Authority = "https://localhost:4435";
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                           ValidateAudience = false
+                       };
+                   });
 
         builder.Services.AddAuthorization(options =>
         {
@@ -54,7 +42,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(s =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Order.Api", Version = "v1" });
+            s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Payment.Api", Version = "v1" });
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"Enter 'Bearer' [space] and your token!",
@@ -85,6 +73,7 @@ public class Program
 
         var app = builder.Build();
 
+        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -92,8 +81,6 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
-        app.UseAuthentication();
 
         app.UseAuthorization();
 
